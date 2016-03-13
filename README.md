@@ -1,17 +1,36 @@
-# Flick
-This is my assignment for #week 1 
+# Project 1 - *Flicks*
 
-Time spent: 5 hours spent in total
+**Flicks** is an app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
-Completed user stories:
+Time spent: **5** hours spent in total
 
- Required: 
- + Get data from Movie API.Show to tableview.
- + Have detail page for show detail of movies review.
- + Have two tabs : now playing and top rated.
- + I have used AFNetworking for load image from json.
-             MBProgressHUb  for creating loading animation.
- + Can Pull to refresh data.
+## User Stories
 
-Walkthrough of all user stories:
-<img height="700px" src="https://github.com/jackynguyen110/Flick/blob/master/TipCalculator3.gif">
+The following **required** functionality is completed:
+
+- [x ] User can view a list of movies currently playing in theaters. Poster images load asynchronously.
+- [x ] User can view movie details by tapping on a cell.
+- [x ] User sees loading state while waiting for the API.
+- [ ] User sees an error message when there is a network error.
+- [x ] User can pull to refresh the movie list.
+
+The following **optional** features are implemented:
+
+- [x ] Add a tab bar for **Now Playing** and **Top Rated** movies.
+- [ ] Implement segmented control to switch between list view and grid view.
+- [ ] Add a search bar.
+- [ ] All images fade in.
+- [ ] For the large poster, load the low-res image first, switch to high-res when complete.
+- [ ] Customize the highlight and selection effect of the cell.
+- [ ] Customize the navigation bar.
+
+The following **additional** features are implemented:
+
+- [ ] List anything else that you can get done to improve the app functionality!
+
+## Video Walkthrough
+
+Here's a walkthrough of implemented user stories:
+
+<img src='https://github.com/jackynguyen110/Flick/blob/master/TipCalculator3.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+

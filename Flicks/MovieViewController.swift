@@ -14,6 +14,7 @@ class MovieViewController: UIViewController, UITableViewDelegate, UITableViewDat
     
     var movies: [NSDictionary]!
     var endPoint:String!
+    var errorLabel:UILabel!
 
     @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
@@ -27,11 +28,28 @@ class MovieViewController: UIViewController, UITableViewDelegate, UITableViewDat
         refreshControl.addTarget(self, action: "refreshControlAction:", forControlEvents: .ValueChanged)
         tableView.insertSubview(refreshControl, atIndex: 0)
         
+        createErrorLabel()
+        
+        if isConnectedToNetwork() == true {
+            errorLabel.hidden = true
+        } else {
+            errorLabel.hidden = false
+        }
     }
     
     func refreshControlAction(refreshControl : UIRefreshControl) {
-        FetchMovie()
-        refreshControl.endRefreshing()
+        if isConnectedToNetwork() == true {
+            print("a")
+            errorLabel.hidden = true
+            FetchMovie()
+            refreshControl.endRefreshing()
+        } else {
+            errorLabel.hidden = false
+            refreshControl.endRefreshing()
+
+        }
+
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -103,6 +121,39 @@ class MovieViewController: UIViewController, UITableViewDelegate, UITableViewDat
         
         let detailViewController = segue.destinationViewController as! DetailViewController
         detailViewController.movie = movie
+        
+    }
+    
+    func createErrorLabel() {
+        errorLabel = UILabel(frame: CGRect(x: 0, y: 63, width: view.bounds.width, height: 20))
+        errorLabel.textAlignment = NSTextAlignment.Center
+        errorLabel.textColor = UIColor.whiteColor()
+        errorLabel.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.8)
+        errorLabel.font = UIFont(name: "HelveticaNeue-Bold",
+            size: 10.0)
+        errorLabel.text = "⚠︎ Network Error"
+        view.addSubview(errorLabel)
+    }
+    
+    func isConnectedToNetwork() -> Bool {
+        
+        var zeroAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
+        zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+        
+        let defaultRouteReachability = withUnsafePointer(&zeroAddress) {
+            SCNetworkReachabilityCreateWithAddress(kCFAllocatorDefault, UnsafePointer($0))
+        }
+        
+        var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags(rawValue: 0)
+        if SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) == false {
+            return false
+        }
+        
+        let isReachable = flags == .Reachable
+        let needsConnection = flags == .ConnectionRequired
+        
+        return isReachable && !needsConnection
         
     }
 
